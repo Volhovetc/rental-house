@@ -1,0 +1,72 @@
+=flex($direction: false, $justify-content: false, $align-items: false, $wrap: false, $grow: false, $align-content: false, $align-self: false, $flex: false)
+	display: flex
+
+	@if $direction and $wrap
+		flex-flow: $direction $wrap
+	@else if $direction
+		flex-direction: $direction
+	@else if $wrap
+		flex-wrap: $wrap
+
+	@if $justify-content
+		justify-content: $justify-content
+
+	@if $align-items
+		align-items: $align-items
+
+	@if $grow
+		flex-grow: $grow
+
+	@if $align-content
+		align-content: $align-content
+	
+	@if $align-self
+		align-self: $align-self
+	
+	@if $flex
+		flex: $flex
+
+// ==================================================
+// Usage:   +transition(width)
+//          +transition([width, height])
+//          +transition([width, height], 2, linear, 1)
+//          +transition([width, height], 2, linear, 1, opacity .31s ease)
+//          +transition
+// Output:  transition: width 0.3s ease-in-out 0s;
+//          transition: width 0.3s ease-in-out 0s, height 0.3s ease-in-out 0s;
+//          transition: width 0.6s linear 1s, height 0.6s linear 1s;
+//          transition: width 0.6s linear 1s, height 0.6s linear 1s, opacity 0.31s ease;
+//          transition: none;
+=transition($properties: none, $duration: 1, $timing: ease-in-out, $delay: 0, $add: null)
+	@if $properties == none
+		transition: none
+
+	@else
+		$props: null
+
+		@each $property in $properties
+			$props: append($props, ($property calc($duration * .3s) $timing calc($delay * 1s)), comma)
+
+		transition: $props, $add
+
+// миксины для адаптива
+
+$desktop_width: 1600px
+$mobile_max_width: 1024px
+$mobile_width: 600px
+
+=desktop
+	@media (min-width: $desktop_width)
+		@content
+
+=laptop
+	@media (min-width: $mobile_max_width + 1px) and (max-width: $desktop_width)
+		@content
+
+=tablet
+	@media (min-width: $mobile_width + 1px) and (max-width: $mobile_max_width)
+		@content
+
+=mobile
+	@media (max-width: $mobile_width)
+		@content
