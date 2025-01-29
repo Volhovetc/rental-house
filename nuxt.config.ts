@@ -12,5 +12,15 @@ export default defineNuxtConfig({
       }
     }
   },
+  imports: {
+		dirs: [
+			'stores',
+			'types',
+			'types/*.ts',
+			'types/**/*.ts',
+			'composables/*.ts',
+			'composables/**/*.ts',
+		],
+	},
   modules: ['@nuxt/ui']
 })
