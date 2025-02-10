@@ -1,9 +1,7 @@
-<template>
-	<div>Page: auth</div>
+<template lang='pug'>
+.Auth
+	h1 Страница регистрации
 </template>
 <script setup lang="ts">
-definePageMeta({
-	layout: 'auth',
-})
 </script>
 <style scoped></style>

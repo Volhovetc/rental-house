@@ -1,3 +1,14 @@
 @use '_normalize'
 @use '_colors'
+@use '_fonts'
 
+html,
+.html
+	font-family: Roboto, sans-serif
+	font-size: 10px
+	font-style: normal
+	line-height: 1
+	color: var(--textLabel)
+	
+	+laptop
+		font-size: 8px

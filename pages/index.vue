@@ -1,9 +1,9 @@
-<template>
-	<div>Page: home</div>
+<template lang='pug'>
+TheAuth
 </template>
-<script setup lang="ts">
-definePageMeta({
-	layout: 'auth',
-})
+<script setup lang='ts'>
+
 </script>
-<style scoped></style>
+<style scoped lang='sass'>
+
+</style>
