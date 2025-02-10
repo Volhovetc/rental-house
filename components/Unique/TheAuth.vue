@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 .TheAuth
 	.wrapperAuthComponents(:class='{ activeSignUp : control.sign }')
 		.signIn
@@ -29,7 +29,7 @@
 						@onClick='handleSign') 
 				Button.fullWidth.focusClass(
 					label='Войти'
-					@onClick='') 
+					@onClick='loginApi()') 
 		.signUp
 			.wrapperInput
 				Input(
@@ -40,7 +40,7 @@
 					:isAutofocus='control.sign')
 				Input(
 					v-if='control.signUp'
-					v-model='state.email'
+					v-model='state.password'
 					label='Код из письма'
 					name='text'
 					placeholder='введите код полученный в письме')
@@ -55,36 +55,78 @@
 						@onClick='handleSign') 
 				Button.fullWidth.focusClass(
 					:label='control.signUp ? "Регистрация" : "получить письмо для регистрации"'
-					@onClick='handleSignUp') 
+					@onClick='singUpApi()')
+					 
 </template>
-<script setup lang='ts'>
+
+<script setup lang="ts">
+const loginApi = async () => {
+  try {
+    const response = await fetch(`http://localhost:8888/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      body: JSON.stringify({
+        email: state.value.email,
+        password: state.value.password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (error) {}
+};
+
+const singUpApi = async () => {
+  try {
+    const response = await fetch(`http://localhost:8888/api/auth/signin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      body: JSON.stringify({
+        email: state.value.email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (error) {}
+  handleSignUp();
+};
+
 const state = ref({
-	email: undefined,
-	password: undefined,
-})
+  email: undefined,
+  password: undefined,
+});
 
 const control = ref({
-	sign: false,
-	signUp: false,
-})
+  sign: false,
+  signUp: false,
+});
 
 const onSubmit = async () => {
-	console.log(state.value)
-}
+  console.log(state.value);
+};
 
 const handleSign = () => {
-	control.value.sign = !control.value.sign
-	console.log(control.value.sign)
-}
+  control.value.sign = !control.value.sign;
+  console.log(control.value.sign);
+};
 
 const handleSignUp = () => {
-	if (control.value.signUp) {
-	} else {
-		control.value.signUp = true
-	}
-}
+  if (control.value.signUp) {
+  } else {
+    control.value.signUp = true;
+  }
+};
 </script>
-<style scoped lang='sass'>
+<style scoped lang="sass">
 .TheAuth
 	+flex
 	margin: auto
