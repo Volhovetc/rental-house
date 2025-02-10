@@ -3,7 +3,11 @@
 	UTooltip(
 		:text='props.tipText'
 		:popper='{ arrow: true, placement: props.isPlacement ?? "top" }')
-		Icon(name="i-custom:quest" style="color: white" size="1.4rem")
+		.trigger(
+			tabindex='0'
+			@focusout='triggerClickOutside()')
+			Icon(name="i-custom:quest" style="color: white" size="1.4rem")
+			slot
 </template>
 <script setup lang='ts'>
 type Placement = 'top' | 'right' | 'bottom' | 'left'
@@ -19,6 +23,11 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const triggerClickOutside = () =>{
+	console.log('вне')
+}
+
 </script>
 <style scoped lang='sass'>
 .Tooltip
