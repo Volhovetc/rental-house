@@ -23,6 +23,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "nuxt-lodash": "^2.5.3",
     "sass": "^1.83.4"
   }
 }

@@ -12,6 +12,9 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	imports: {
+		dirs: ['stores', 'types', 'types/*.ts', 'types/**/*.ts', 'composables', 'composables/*.ts', 'composables/**/*.ts'],
+	},
 	components: [
 		{
 			path: '~/components',
@@ -22,9 +25,12 @@ export default defineNuxtConfig({
 		customCollections: [
 			{
 				prefix: 'custom',
-				dir: './assets/icons'
+				dir: './assets/icons',
 			},
 		],
 	},
+	// piniaPluginPersistedstate: {
+	//   storage: 'localStorage',
+	// },
 	modules: ['@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@nuxt/fonts', '@nuxt/icon'],
 })

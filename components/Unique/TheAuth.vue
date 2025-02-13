@@ -1,66 +1,72 @@
-<template lang='pug'>
-.TheAuth
-	.wrapperAuthComponents(:class='{ activeSignUp : control.sign }')
-		.signIn
-			.wrapperInput
-				Input(
-					v-model='state.email'
-					label='Электронная почта'
-					name='email'
-					placeholder='введите вашу почту'
-					autocomplete
-					tipText='Введите пожалуйста вашу почту'
-					:isAutofocus='!control.sign')
-				Input(
-					v-model='state.password'
-					label='Пароль'
-					type='password'
-					name='password'
-					tipText='Введите пожалуйста ваш пароль'
-					placeholder='введите ваш пароль'
-					autocomplete)
-			.wrapperButtonsColumn
-				.wrapperButtonsRow
-					Button.fullWidth.warning(
-						label='Забыли пароль?'
-						@onClick='') 
-					Button.fullWidth(
-						label='регистрация'
-						@onClick='handleSign') 
-				Button.fullWidth.focusClass(
-					label='Войти'
-					@onClick='') 
-		.signUp
-			.wrapperInput
-				Input(
-					v-model='state.email'
-					label='Электронная почта'
-					name='email'
-					placeholder='введите вашу почту'
-					:isAutofocus='control.sign')
-				Input(
-					v-if='control.signUp'
-					v-model='state.email'
-					label='Код из письма'
-					name='text'
-					placeholder='введите код полученный в письме')
-			.wrapperButtonsColumn
-				.wrapperButtonsRow
-					Button.fullWidth(
-						v-if='control.signUp'
-						label='повторить код'
-						@onClick='') 
-					Button.fullWidth(
-						label='вернуться'
-						@onClick='handleSign') 
-				Button.fullWidth.focusClass(
-					:label='control.signUp ? "Регистрация" : "получить письмо для регистрации"'
-					@onClick='handleSignUp') 
+<template>
+	<div class="TheAuth">
+		<div :class="['wrapperAuthComponents', { activeSignUp: control.sign }]">
+			<div class="signIn">
+				<div class="wrapperInput">
+					<Input
+						v-model="state.email.value"
+						label="Электронная почта"
+						name="email"
+						placeholder="введите вашу почту"
+						autocomplete
+						tipText="Введите пожалуйста вашу почту"
+						:isAutofocus="!control.sign"
+					/>
+					<Input
+						v-model="state.password.value"
+						label="Пароль"
+						type="password"
+						name="password"
+						tipText="Введите пожалуйста ваш пароль"
+						placeholder="введите ваш пароль"
+						autocomplete
+					/>
+				</div>
+				<div class="wrapperButtonsColumn">
+					<div class="wrapperButtonsRow">
+						<Button class="fullWidth" label="Забыли пароль?" @onClick="" />
+						<Button class="fullWidth" label="регистрация" @onClick="handleSign" />
+					</div>
+					<Button class="fullWidth focusClass" label="Войти" @onClick="signIn" />
+				</div>
+			</div>
+			<div class="signUp">
+				<div class="wrapperInput flex h-full items-center">
+					<Input
+						v-model="state.email.value"
+						label="Электронная почта"
+						name="email"
+						placeholder="введите вашу почту"
+						autocomplete
+						tipText="Введите пожалуйста вашу почту"
+						:isAutofocus="control.sign"
+					/>
+				</div>
+				<div class="wrapperButtonsColumn">
+					<div class="wrapperButtonsRow">
+						<Button class="fullWidth" label="вернуться" @onClick="handleSign" />
+					</div>
+					<Button class="fullWidth focusClass" :label="control.signUp ? 'Регистрация' : 'Получить письмо для регистрации'" @onClick="signUp" />
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
-<script setup lang='ts'>
+<script setup lang="ts">
+const useUser = useUserStore()
+
 const state = ref({
-	email: undefined,
-	password: undefined,
+	email: {
+		value: '',
+		error: '',
+		isShowError: false,
+	},
+	password: {
+		value: '',
+		error: '',
+		isShowError: false,
+	},
+	accepts: false,
 })
 
 const control = ref({
@@ -68,13 +74,59 @@ const control = ref({
 	signUp: false,
 })
 
-const onSubmit = async () => {
-	console.log(state.value)
+// Запрос на регистрацию
+const signUp = async () => {
+	const email = state.value.email
+	const accepts = state.value.accepts
+
+	email.value = email.value.trim()
+
+	state.value.email.isShowError = !!email.error
+	// accepts[0].error = accepts[0].isAccept ? '' : 'Необходимо принять Условия обработки персональных данных'
+	// accepts[1].error = accepts[1].isAccept ? '' : 'Необходимо принять Условия платформы'
+
+	// if (email.error || !accepts[0].isAccept || !accepts[1].isAccept) {
+	// 	return
+	// }
+	// логика api запроса на регистрацию
+	const res = await apiSignUp(email.value)
+	// проверяем запрос на тип
+	if (typeof res === 'boolean') {
+		// отправляем на регистрацию
+		// если false то уведомляем о том что пользователь получал письмо и отправляем на регистрацию
+		if (!res) {
+		}
+		control.value.sign = false
+	} else {
+		// обработка ошибки
+		// pageError.value = res ? (typeof res === 'string' ? res : res.error) : 'Неизвестная ошибка'
+	}
 }
 
+// Запрос на авторизацию
+const signIn = async () => {
+	const email = state.value.email
+	const password = state.value.password
+
+	email.value = email.value.trim()
+	password.value = password.value.trim()
+
+	state.value.email.isShowError = !!email.error
+	state.value.password.isShowError = !!password.error
+
+	// логика api запроса на авторизацию
+	const res = await apiSignIn(email.value, password.value)
+	// проверяем запрос на тип
+	if (res) {
+		console.log('зарегались')
+		return
+	} else {
+		// обработка ошибки
+		// pageError.value = res ? (typeof res === 'string' ? res : res.error) : 'Неизвестная ошибка'
+	}
+}
 const handleSign = () => {
 	control.value.sign = !control.value.sign
-	console.log(control.value.sign)
 }
 
 const handleSignUp = () => {
@@ -83,8 +135,12 @@ const handleSignUp = () => {
 		control.value.signUp = true
 	}
 }
+
+const handleSubmit = () => {
+	// useUser.user.fio.firstName = state.value.email
+}
 </script>
-<style scoped lang='sass'>
+<style scoped lang="sass">
 .TheAuth
 	+flex
 	margin: auto
@@ -93,7 +149,7 @@ const handleSignUp = () => {
 
 	.wrapperAuthComponents
 		+flex(row, start, start, nowrap)
-		width: 30rem
+		width: 40rem
 		+transition(transform)
 
 		.signIn,
