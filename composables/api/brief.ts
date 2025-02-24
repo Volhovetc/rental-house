@@ -1,15 +1,12 @@
-export const apiSignUp = async (email: string) => {
+export const apiBriefSubmit = async (body) => {
 	const response = await useApiFetch({
-		path: 'api/auth/signup',
+		path: 'api/base/data',
 		method: 'POST',
-		body: {
-			email: email,
-		},
-		isDisableTokenHead: true
-	}).then((res): boolean | string => {
+		body: body,
+	}).then((res): ApiResError | boolean => {
 		if (res) {
 			if (res.type === 'data') {
-				return res.value as boolean
+				return true
 			} else if (res.type === 'error') {
 				return res.value as string
 			}

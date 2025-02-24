@@ -1,5 +1,5 @@
 <template lang="pug">
-.Label(
+.ILabel(
 	v-if='props.text || $slots.default'
 	:class='{ multi: typeof props.text === "object", link: props.linkTo }'
 	:style='{ fontSize: props.fontSize, lineHeight: props.lineHeight, color: props.color, backgroundColor: props.backgroundColor }'
@@ -36,7 +36,7 @@ const handleLabelClick = () => {
 </script>
 
 <style lang="sass" scoped>
-.Label
+.ILabel
 	+flex($justify-content: left)
 	width: fit-content
 	font-size: 1.2rem
@@ -46,8 +46,7 @@ const handleLabelClick = () => {
 	+transition(color)
 
 	.required
-		margin-left: 1px
-		color: red
+		margin-left: .2rem
 
 	&.alignItemsCenter
 		+flex($align-items: center)

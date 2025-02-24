@@ -1,16 +1,26 @@
 export interface Input {
-	label?: string
 	name?: string
-	isAutofocus?: boolean
+	label?: string
+	tipText?: string
 	type?: InputType
 	placeholder?: string
-	tipText?: string
+
+	isAutocomplete?: boolean
+	isAutofocus?: boolean
+	isRequired?: boolean
+	isDisabled?: boolean
 }
 
 export interface Button {
 	label?: string | number
 	type?: string
 	isStopPropagation?: boolean
+}
+
+export interface Icon {
+	name: string
+	style?: string
+	size?: string
 }
 
 declare global {

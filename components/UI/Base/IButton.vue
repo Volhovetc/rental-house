@@ -1,8 +1,8 @@
 <template lang='pug'>
-.Button(
+.IButton(
 	:tabindex='props.isDisabled ? -1 : 0'
 	@click='handleClick($event)')
-	Label.cursorPointer(:text='props.label')
+	ILabel.cursorPointer(:text='props.label')
 </template>
 
 <script lang='ts' setup>
@@ -22,7 +22,7 @@ const handleClick = (e: Event) => {
 </script>
 
 <style lang="sass" scoped>
-.Button
+.IButton
 	+flex(row, center)
 	padding: .5rem 1rem
 	border-radius: .5rem

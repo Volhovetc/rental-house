@@ -1,5 +1,6 @@
 <template>
 	<div class="rentalHouseApp">
+		Куда пришел?
 		<nav class="flex">
 			<ul class="flex gap-2">
 				<li><NuxtLink to="/auth">auth</NuxtLink></li>

@@ -1,5 +1,7 @@
-<template lang='pug'>
-.Dashboard Page: dashboard
+<template>
+<div class="Dashboard">
+dasboadr
+</div>
 </template>
 <script setup lang="ts">
 

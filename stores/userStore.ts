@@ -6,31 +6,27 @@ export const useUserStore = defineStore(
 	() => {
 		// Stab (вынесен для очистки стора)
 		const userStab = {
-			fio: {
-				firstName: undefined as string | undefined,
-				middleName: undefined as string | undefined,
-				lastName: undefined as string | undefined,
-			},
+		
 		}
 
 		// State
 		const user = ref({
-			fio: {
-				firstName: undefined as string | undefined,
-				middleName: undefined as string | undefined,
-				lastName: undefined as string | undefined,
-			},
+			
 		})
+
+		// Getters
+
 
 		return {
 			user,
+
 		}
 	},
 	{
 		persist: {
 			storage: piniaPluginPersistedstate.localStorage(),
 			pick: ['user'],
-			key: 'user'
+			key: 'user',
 		},
 	}
 )

@@ -1,31 +1,29 @@
-<template lang="pug">
-.Input
-	.wrapperHeader
-		Label.textNowrap(
-			fontSize='1rem'
-			:text='props.label')
-		Tooltip(
-			v-if='props.tipText'
-			isPlacement='left' 
-			:tipText='props.tipText')
-	input(
-		v-model='value'
-		ref='inputRef'
-		:autocomplete='props.autocomplete ?? "off"',
-		:disabled='props.isDisabled || props.isCheckBoxDisableContent && !isChecked'
-		:pattern='props.pattern'
-		:placeholder='props.placeholder'
-		:readonly='props.isReadonly'
-		:spellcheck='false'
-		:tabindex='props.isDisabled ? -1 : 0'
-		:name='props.name'
-		:type='control.isShowPassword ? "text" : props.type'
-		@input='handleInput'
-		@focus='handleInputFocus'
-		@blur='handleInputBlur'
-		@keyup='handleInputKeyUp'
-		@keyup.enter='handleKeyUpEnter'
-		@click.stop='handleInputClick')
+<template>
+	<div class="IInput">
+		<div class="wrapperHeader">
+			<div v-if="props.label || props.isRequired" class="wrapperTitle">
+				<ILabel class="title textNowrap" :text="props.label" :isRequired="props.isRequired" fontSize='1.2rem' />
+			</div>
+			<ITooltip v-if="props.tipText" isPlacement="left" :tipText="props.tipText" />
+		</div>
+		<input
+			v-model="value"
+			ref="inputRef"
+			:autocomplete="props.isAutocomplete ? 'on' : 'off'"
+			:placeholder="props.placeholder"
+			:spellcheck="false"
+			:tabindex="props.isDisabled ? -1 : 0"
+			:name="props.name"
+			:type="control.isShowPassword ? 'text' : props.type"
+			@input="handleInput"
+			@focus="handleInputFocus"
+			@blur="handleInputBlur"
+			@keyup="handleInputKeyUp"
+			@keyup.enter="handleKeyUpEnter"
+			@click.stop="handleInputClick"
+		/>
+		<div v-if="props.isRequired" :class="[value?.length ? 'requiredTrue' : '', 'requiredFalse']" />
+	</div>
 </template>
 
 <script lang="ts" setup>
@@ -38,7 +36,7 @@ const value = defineModel<string | undefined>()
 const inputRef = defineModel<HTMLInputElement>('inputRef')
 
 const control = ref({
-	isShowPassword: false
+	isShowPassword: false,
 })
 
 const emit = defineEmits(['onEnter', 'onClick', 'onFocus', 'onBlur', 'onKeyUp', 'onInput'])
@@ -81,22 +79,27 @@ onMounted(() => {
 </script>
 
 <style lang="sass" scoped>
-.Input
+.IInput
 	position: relative
 	width: 100%
-	padding-top: .6rem
+	padding-top: .8rem
 
 	.wrapperHeader
 		position: absolute
 		top: 0
 		left: 1rem
-		+flex(row, space-between, start)
+		+flex(row, space-between, center)
+		gap: 1rem
 		width: calc( 100% - 2rem )
 
-		.Label
-			padding: .2rem 1rem
+		.wrapperTitle
+			+flex(row, start, center)
+			gap: .5rem
+			padding: .1rem .6rem
 			border-radius: .5rem
 			background-image: var(--background-image)
+
+		.ITooltip
 
 	input
 		width: 100%
@@ -116,4 +119,18 @@ onMounted(() => {
 		-o-transition: box-shadow .5s ease
 		-ms-transition: box-shadow .5s ease
 		transition: box-shadow .5s ease
+
+	.requiredFalse
+		position: absolute
+		left: .2rem
+		bottom: 1.1rem
+		width: calc( 100% - .4rem )
+		height: .3rem
+		border-radius: 0 0 .5rem .5rem
+		background-color: var(--warning-light)
+		opacity: .4
+		+transition(background-color)
+
+		&.requiredTrue
+			background-color: var(--green-light)
 </style>
