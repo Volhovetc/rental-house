@@ -2,7 +2,7 @@ export const apiSignIn = async (email: string, password: string, isRemember?: bo
 	const appStore = useAppStore()
 	const tokenStore = useTokenStore()
 	const response = await useApiFetch({
-		path: 'api/auth/signin',
+		path: 'api/signin',
 		method: 'POST',
 		body: {
 			email: email,

@@ -1,6 +1,6 @@
 export const apiSignUp = async (email: string) => {
 	const response = await useApiFetch({
-		path: 'api/auth/signup',
+		path: 'api/signup',
 		method: 'POST',
 		body: {
 			email: email,

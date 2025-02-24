@@ -1,6 +1,6 @@
 export const apiBriefSubmit = async (body) => {
 	const response = await useApiFetch({
-		path: 'api/base/data',
+		path: 'api/brief',
 		method: 'POST',
 		body: body,
 	}).then((res): ApiResError | boolean => {
