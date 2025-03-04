@@ -1,4 +1,4 @@
-export const apiBriefSubmit = async (body) => {
+export const apiBriefSubmit = async (body : any) => {
 	const response = await useApiFetch({
 		path: 'api/brief',
 		method: 'POST',
